@@ -191,5 +191,107 @@
             sequence="Ctrl+Shift+A">
       </key>
    </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="com.qualityeclipse.favorites.workbenchActionSet"
+            label="Favorites ActionSet"
+            visible="true">
+         <menu
+               id="com.qualityeclipse.favorites.workbenchMenu"
+               label="Fa&amp;vorites"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+         <action
+               class="com.qualityeclipse.favorites.actions.OpenFavoritesViewActionDelegate"
+               hoverIcon="icons/sample.gif"
+               icon="icons/sample.gif"
+               id="com.qualityeclipse.favorites.openFavoritesView"
+               label="Open Favo&amp;rites View"
+               menubarPath="com.qualityeclipse.favorites.workbenchMenu/content"
+               style="push"
+               toolbarPath="Normal/additions"
+               tooltip="Open the favorites view in the current workbench page">
+         </action>
+      </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <objectContribution
+            adaptable="true"
+            id="com.qualityeclipse.favorites.popupMenu"
+            objectClass="org.eclipse.core.resources.IResource">
+         <action
+               class="com.qualityeclipse.favorites.actions.AddToFavoritesActionDelegate"
+               enablesFor="+"
+               icon="icons/sample.gif"
+               id="com.qualityeclipse.favorites.addToFavorites"
+               label="Add"
+               menubarPath="com.qualityeclipse.favorites.popupSubMenu/content"
+               tooltip="Add the selected resource(s) to the Favorites view">
+         </action>
+         <menu
+               id="com.qualityeclipse.favorites.popupSubMenu"
+               label="Favorites"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="additions">
+            </separator>
+         </menu>
+      </objectContribution>
+      <viewerContribution
+            id="com.qualityeclipse.favorites.membersViewPopup"
+            targetID="org.eclipse.jdt.ui.MembersView">
+         <menu
+               id="com.qualityeclipse.favorites.membersViewPopupSubMenu"
+               label="Favorites"
+               path="additions">
+            <groupMarker
+                  name="content">
+            </groupMarker>
+            <separator
+                  name="addition">
+            </separator>
+         </menu>
+         <action
+               class="com.qualityeclipse.favorites.actions.AddToFavoritesActionDelegate"
+               icon="icons/sample.gif"
+               id="com.qualityeclipse.favorites.addToFavoritesInMembersView"
+               label="Add"
+               menubarPath="com.qualityeclipse.favorites.membersViewPopupSubMenu/content"
+               tooltip="Add selected member&apos;s compilation unit to the Favorites view">
+         </action>
+      </viewerContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.viewActions">
+      <viewContribution
+            id="com.qualityeclipse.favorites.membersViewActions"
+            targetID="org.eclipse.jdt.ui.MembersView">
+         <action
+               class="com.qualityeclipse.favorites.ViewActionDelegate1"
+               id="com.qualityeclipse.favorites.action1"
+               label="label"
+               style="push">
+         </action>
+         <action
+               class="com.qualityeclipse.favorites.actions.AddToFavoritesActionDelegate"
+               icon="icons/sample.gif"
+               id="com.qualityeclipse.favorites.addToFavoritesInMembersView"
+               label="Add"
+               menubarPath="com.qualityeclipse.favorites.membersViewPopupSubMenu/content"
+               tooltip="Add selected member&apos;s compilation unit to the Favorites view">
+         </action>
+      </viewContribution>
+   </extension>
 
 </plugin>

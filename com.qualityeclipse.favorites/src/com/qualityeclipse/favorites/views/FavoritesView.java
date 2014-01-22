@@ -92,6 +92,7 @@ public class FavoritesView extends ViewPart {
 		viewer.setLabelProvider(new ViewLabelProvider());
 //		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
+		getViewSite().setSelectionProvider(viewer);
 		/*makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
