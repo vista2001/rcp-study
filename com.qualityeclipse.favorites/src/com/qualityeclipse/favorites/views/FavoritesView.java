@@ -2,6 +2,8 @@ package com.qualityeclipse.favorites.views;
 
 
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Table;
+import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.part.*;
 import org.eclipse.jface.viewers.*;
 import org.eclipse.swt.graphics.Image;
@@ -38,6 +40,10 @@ public class FavoritesView extends ViewPart {
 	public static final String ID = "com.qualityeclipse.favorites.views.FavoritesView";
 
 	private TableViewer viewer;
+	private TableColumn typeColumn;
+	private TableColumn nameColumn;
+	private TableColumn locationColumn;
+	
 	/*private Action action1;
 	private Action action2;
 	private Action doubleClickAction;*/
@@ -87,11 +93,25 @@ public class FavoritesView extends ViewPart {
 	 * to create the viewer and initialize it.
 	 */
 	public void createPartControl(Composite parent) {
-		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL);
+		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.FULL_SELECTION);
+		final Table table = viewer.getTable();
+		typeColumn = new TableColumn(table, SWT.LEFT);
+		typeColumn.setText("");
+		typeColumn.setWidth(18);
+		
+		nameColumn = new TableColumn(table, SWT.LEFT);
+		nameColumn.setText("name");
+		nameColumn.setWidth(200);
+		
+		locationColumn = new TableColumn(table, SWT.LEFT);
+		locationColumn.setText("Location");
+		locationColumn.setWidth(450);
+		
+		
 		viewer.setContentProvider(new ViewContentProvider());
 		viewer.setLabelProvider(new ViewLabelProvider());
-//		viewer.setSorter(new NameSorter());
 		viewer.setInput(getViewSite());
+//		viewer.setSorter(new NameSorter());
 		/*makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
