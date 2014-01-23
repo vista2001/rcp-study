@@ -69,4 +69,5 @@ public abstract class FavoriteItemType implements Comparable<FavoriteItemType> {
 		
 	};
 	
+	
 }
