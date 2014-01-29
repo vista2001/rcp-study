@@ -10,7 +10,9 @@ import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.JavaModelException;
 
 import com.qualityeclipse.favorites.FavoritesLog;
-
+/**
+ * This class adapts a javaElement to interface IFavoriteItem
+ * */
 public class FavoriteJavaElement implements IFavoriteItem{
 	private FavoriteItemType type;
 	private IJavaElement element;

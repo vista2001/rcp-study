@@ -5,7 +5,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
-
+/**
+ * 这个类包含了一个IResource对象,并将它适配到IFavoriteItem接口
+ * */
 public class FavoriteResource implements IFavoriteItem {
 
 	private FavoriteItemType type;
