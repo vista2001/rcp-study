@@ -39,7 +39,6 @@
    <extension
          point="org.eclipse.ui.menus">
       <menuContribution
-            allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu?after=additions">
          <menu
                id="com.qualityeclipse.favorites.menus.favoritesMenu"
@@ -55,7 +54,6 @@
          </menu>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
          <toolbar
                id="com.qualityeclipse.favorites.toolbars.main">
@@ -69,14 +67,12 @@
          </toolbar>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="popup:org.eclipse.ui.popup.any?after=additions">
          <menu
                label="Favorites">
             <command
                   commandId="com.qualityeclipse.favorites.commands.add"
                   icon="icons/sample.gif"
-                  id="com.qualityeclipse.favorites.commands.add"
                   style="push">
                <visibleWhen
                      checkEnabled="false">
@@ -92,12 +88,12 @@
                               </instanceof>
                               <instanceof
                                     value="org.eclipse.jdt.core.IJavaElement">
-                              </instanceof></or>
+                              </instanceof>
+                              </or>
+                            <test
+                              	property="com.qualityeclipse.favorites.notFavorite">
+                        	</test>
                         </and>
-                        <test
-                              forcePluginActivation="true"
-                              property="com.qualityeclipse.favorites.notFavorites">
-                        </test>
                      </iterate>
                   </with>
                </visibleWhen>
@@ -105,7 +101,6 @@
          </menu>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="menu:org.eclipse.ui.views.ProblemView?after=additions">
          <menu
                id="com.qualityeclipse.favorites.problem.pullDown.favoritesMenu"
@@ -120,7 +115,6 @@
          </menu>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="toolbar:org.eclipse.ui.views.ProblemView?after=additions">
          <command
                commandId="com.qualityeclipse.favorites.commands.openView"
@@ -130,7 +124,6 @@
          </command>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="popup:org.eclipse.ui.views.ProblemView?after=additions">
          <menu
                label="Favorites">
@@ -143,7 +136,6 @@
          </menu>
       </menuContribution>
       <menuContribution
-            allPopups="false"
             locationURI="menu:window?after=additions">
          <command
                commandId="com.qualityeclipse.favorites.commands.openView"

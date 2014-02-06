@@ -2,15 +2,25 @@ package com.qualityeclipse.favorites.views;
 
 import java.util.Comparator;
 
+import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.ui.part.*;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.SWT;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.part.ViewPart;
 
+import com.qualityeclipse.favorites.contributions.RemoveFavoirtesContributionItem;
+import com.qualityeclipse.favorites.handlers.RemoveFavoritesHandler;
 import com.qualityeclipse.favorites.model.FavoritesManager;
-import com.qualityeclipse.favorites.model.FavoritesViewSorter;
 import com.qualityeclipse.favorites.model.IFavoriteItem;
 
 /**
@@ -40,6 +50,8 @@ public class FavoritesView extends ViewPart {
 	private TableColumn nameColumn;
 	private TableColumn locationColumn;
 	private FavoritesViewSorter sorter;
+	private IHandler removeHandler;
+	private RemoveFavoirtesContributionItem removeContributionItem;
 
 	/**
 	 * The constructor.
@@ -52,6 +64,13 @@ public class FavoritesView extends ViewPart {
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
+		createTableViewer(parent);
+		createTableSorter();
+		createContributions();
+		createContextMenu();
+	}
+
+	private void createTableViewer(Composite parent) {
 		viewer = new TableViewer(parent, SWT.MULTI | SWT.H_SCROLL
 				| SWT.V_SCROLL | SWT.FULL_SELECTION);
 		final Table table = viewer.getTable();
@@ -73,8 +92,8 @@ public class FavoritesView extends ViewPart {
 		viewer.setContentProvider(new FavoritesViewContentProvider());
 		viewer.setLabelProvider(new FavoritesViewLabelProvider());
 		viewer.setInput(FavoritesManager.getManager());
-		createTableSorter();
-
+		//注册当前视图为选择选择提供者
+		getSite().setSelectionProvider(viewer);
 	}
 
 	private void createTableSorter() {
@@ -105,10 +124,43 @@ public class FavoritesView extends ViewPart {
 		viewer.setSorter(sorter);
 	}
 
+	private void createContributions() {
+		removeHandler = new RemoveFavoritesHandler();
+		removeContributionItem = new RemoveFavoirtesContributionItem(
+				getViewSite(), removeHandler);
+	}
+
+	private void createContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager m) {
+				FavoritesView.this.fillContextMenu(m);
+			}
+		});
+		Menu menu = menuMgr.createContextMenu(viewer.getControl());
+		viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, viewer);
+	}
+
+	private void fillContextMenu(IMenuManager menuMgr) {
+		menuMgr.add(new Separator("edit"));
+		menuMgr.add(removeContributionItem);
+		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+
+	public IStructuredSelection getSelection() {
+		return (IStructuredSelection) viewer.getSelection();
+	}
+
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
 		viewer.getControl().setFocus();
+	}
+
+	public void addSelectionChangedListener(ISelectionChangedListener listener) {
+		viewer.addSelectionChangedListener(listener);
 	}
 }

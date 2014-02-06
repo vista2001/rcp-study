@@ -1,4 +1,4 @@
-package com.qualityeclipse.favorites.model;
+package com.qualityeclipse.favorites.views;
 
 import java.util.Comparator;
 
