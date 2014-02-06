@@ -9,7 +9,6 @@ public class AddToFavoritesHandler extends AbstractHandler {
 
 	public Object execute(ExecutionEvent arg0) throws ExecutionException {
 		MessageDialog.openConfirm(null, "Add", "The \"Add to Favorites\" handler was called");
-		// TODO Auto-generated method stub
 		return null;
 	}
 

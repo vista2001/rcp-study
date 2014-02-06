@@ -3,8 +3,6 @@ package com.qualityeclipse.favorites.views;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.ui.ISharedImages;
-import org.eclipse.ui.PlatformUI;
 
 import com.qualityeclipse.favorites.model.IFavoriteItem;
 
