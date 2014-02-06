@@ -3,8 +3,10 @@ package com.qualityeclipse.favorites.views;
 import java.util.Comparator;
 
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.action.GroupMarker;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -18,6 +20,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.part.ViewPart;
 
+import com.qualityeclipse.favorites.actions.FavoritesViewFilterAction;
 import com.qualityeclipse.favorites.contributions.RemoveFavoirtesContributionItem;
 import com.qualityeclipse.favorites.handlers.RemoveFavoritesHandler;
 import com.qualityeclipse.favorites.model.FavoritesManager;
@@ -52,6 +55,7 @@ public class FavoritesView extends ViewPart {
 	private FavoritesViewSorter sorter;
 	private IHandler removeHandler;
 	private RemoveFavoirtesContributionItem removeContributionItem;
+	private FavoritesViewFilterAction filterAction;
 
 	/**
 	 * The constructor.
@@ -68,6 +72,8 @@ public class FavoritesView extends ViewPart {
 		createTableSorter();
 		createContributions();
 		createContextMenu();
+		createToolbarButtons();
+		createViewPulldownMenu();
 	}
 
 	private void createTableViewer(Composite parent) {
@@ -92,10 +98,11 @@ public class FavoritesView extends ViewPart {
 		viewer.setContentProvider(new FavoritesViewContentProvider());
 		viewer.setLabelProvider(new FavoritesViewLabelProvider());
 		viewer.setInput(FavoritesManager.getManager());
-		//注册当前视图为选择选择提供者
+		// 注册当前视图为选择选择提供者
 		getSite().setSelectionProvider(viewer);
 	}
 
+	@SuppressWarnings("unchecked")
 	private void createTableSorter() {
 		Comparator<IFavoriteItem> nameComparator = new Comparator<IFavoriteItem>() {
 
@@ -148,6 +155,20 @@ public class FavoritesView extends ViewPart {
 		menuMgr.add(removeContributionItem);
 		menuMgr.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
+
+	private void createToolbarButtons() {
+		IToolBarManager toolBarMgr = getViewSite().getActionBars()
+				.getToolBarManager();
+		toolBarMgr.add(new GroupMarker("edit"));
+		toolBarMgr.add(removeContributionItem);
+	}
+	private void createViewPulldownMenu() {
+	      IMenuManager menu =
+	            getViewSite().getActionBars().getMenuManager();
+	      filterAction =
+	            new FavoritesViewFilterAction(viewer, "Filter...");
+	      menu.add(filterAction);
+	   }
 
 	public IStructuredSelection getSelection() {
 		return (IStructuredSelection) viewer.getSelection();

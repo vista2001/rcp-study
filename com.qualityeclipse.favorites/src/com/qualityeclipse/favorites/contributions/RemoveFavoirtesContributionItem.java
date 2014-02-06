@@ -15,24 +15,25 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.handlers.IHandlerService;
 
 import com.qualityeclipse.favorites.FavoritesLog;
-import com.qualityeclipse.favorites.views.FavoritesView;
 
 public class RemoveFavoirtesContributionItem extends ContributionItem {
 	private final IViewSite viewSite;
-	//private final FavoritesView view;
 	private final IHandler handler;
 	boolean enabled = false;
 	private MenuItem menuItem;
+	private ToolItem toolItem;
 
-	public RemoveFavoirtesContributionItem(IViewSite viewSite,IHandler handler) {
-		//this.view = view;
+	public RemoveFavoirtesContributionItem(IViewSite viewSite, IHandler handler) {
+		// this.view = view;
 		this.handler = handler;
-		this.viewSite=viewSite;
+		this.viewSite = viewSite;
 		viewSite.getSelectionProvider().addSelectionChangedListener(
 				new ISelectionChangedListener() {
 
@@ -57,6 +58,19 @@ public class RemoveFavoirtesContributionItem extends ContributionItem {
 		updateEnablement();
 	}
 
+	public void fill(ToolBar parent, int index) {
+		toolItem = new ToolItem(parent, SWT.NONE, index);
+		toolItem.setToolTipText("Remove the selected favorite items");
+		toolItem.addSelectionListener(new SelectionAdapter() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				run();
+			}
+		});
+		updateEnablement();
+	}
+
 	private void updateEnablement() {
 		Image image = PlatformUI
 				.getWorkbench()
@@ -64,9 +78,13 @@ public class RemoveFavoirtesContributionItem extends ContributionItem {
 				.getImage(
 						enabled ? org.eclipse.ui.ISharedImages.IMG_TOOL_DELETE
 								: org.eclipse.ui.ISharedImages.IMG_TOOL_DELETE_DISABLED);
-		if(menuItem!=null){
+		if (menuItem != null) {
 			menuItem.setImage(image);
 			menuItem.setEnabled(enabled);
+		}
+		if (toolItem != null) {
+			toolItem.setImage(image);
+			toolItem.setEnabled(enabled);
 		}
 	}
 
