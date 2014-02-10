@@ -11,14 +11,21 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.handlers.IHandlerActivation;
+import org.eclipse.ui.handlers.IHandlerService;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.texteditor.IWorkbenchActionDefinitionIds;
 
 import com.qualityeclipse.favorites.actions.FavoritesViewFilterAction;
 import com.qualityeclipse.favorites.contributions.RemoveFavoirtesContributionItem;
@@ -74,6 +81,8 @@ public class FavoritesView extends ViewPart {
 		createContextMenu();
 		createToolbarButtons();
 		createViewPulldownMenu();
+		hookKeyboard();
+		hookGlobalHandlers();
 	}
 
 	private void createTableViewer(Composite parent) {
@@ -162,13 +171,51 @@ public class FavoritesView extends ViewPart {
 		toolBarMgr.add(new GroupMarker("edit"));
 		toolBarMgr.add(removeContributionItem);
 	}
+
 	private void createViewPulldownMenu() {
-	      IMenuManager menu =
-	            getViewSite().getActionBars().getMenuManager();
-	      filterAction =
-	            new FavoritesViewFilterAction(viewer, "Filter...");
-	      menu.add(filterAction);
-	   }
+		IMenuManager menu = getViewSite().getActionBars().getMenuManager();
+		filterAction = new FavoritesViewFilterAction(viewer, "Filter...");
+		menu.add(filterAction);
+	}
+
+	private void hookKeyboard() {
+		viewer.getControl().addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+				handleKeyReleased(e);
+			}
+
+		});
+	}
+
+	protected void handleKeyReleased(KeyEvent event) {
+		if (event.character == SWT.DEL && event.stateMask == 0)
+			removeContributionItem.run();
+	}
+
+	private void hookGlobalHandlers() {
+		final IHandlerService handlerService = (IHandlerService) getViewSite()
+				.getService(IHandlerService.class);
+		viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+			private IHandlerActivation removeActivation;
+
+			public void selectionChanged(SelectionChangedEvent event) {
+				if (event.getSelection().isEmpty()) {
+					if (removeActivation != null) {
+						handlerService.deactivateHandler(removeActivation);
+						removeActivation = null;
+					}
+				} else {
+					if (removeActivation == null) {
+						removeActivation = handlerService.activateHandler(
+								IWorkbenchActionDefinitionIds.DELETE,
+								removeHandler);
+					}
+				}
+			}
+		});
+	}
 
 	public IStructuredSelection getSelection() {
 		return (IStructuredSelection) viewer.getSelection();
