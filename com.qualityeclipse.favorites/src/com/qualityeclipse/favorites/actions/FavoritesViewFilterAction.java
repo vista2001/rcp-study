@@ -17,28 +17,33 @@ import com.qualityeclipse.favorites.views.FavoritesViewNameFilter;
  * This could (should?) be implemented as a subclass of {@link ContributionItem}
  * but instead we subclass Action to illustrate the older approach.
  */
-public class FavoritesViewFilterAction extends Action
-{
-   private final Shell shell;
-   private final FavoritesViewNameFilter nameFilter;
+public class FavoritesViewFilterAction extends Action {
+	private final Shell shell;
+	private final FavoritesViewNameFilter nameFilter;
 
-   public FavoritesViewFilterAction(StructuredViewer viewer,
-         String text) {
-      super(text);
-      shell = viewer.getControl().getShell();
-      nameFilter = new FavoritesViewNameFilter(viewer);
-   }
+	public FavoritesViewFilterAction(StructuredViewer viewer, String text) {
+		super(text);
+		shell = viewer.getControl().getShell();
+		nameFilter = new FavoritesViewNameFilter(viewer);
+	}
 
-   public void run() {
-      InputDialog dialog =
-            new InputDialog(shell, "Favorites View Filter",
-                  "Enter a name filter pattern"
-                        + " (* = any string, ? = any character)"
-                        + System.getProperty("line.separator")
-                        + "or an empty string for no filtering:",
-                  nameFilter.getPattern(), null);
-      if (dialog.open() == InputDialog.OK)
-         nameFilter.setPattern(dialog.getValue().trim());
-   }
+	public void run() {
+		InputDialog dialog = new InputDialog(shell, "Favorites View Filter",
+				"Enter a name filter pattern"
+						+ " (* = any string, ? = any character)"
+						+ System.getProperty("line.separator")
+						+ "or an empty string for no filtering:",
+				nameFilter.getPattern(), null);
+		if (dialog.open() == InputDialog.OK)
+			nameFilter.setPattern(dialog.getValue().trim());
+	}
+	/**保存过滤器信息*/
+	public void saveState(IMemento memento) {
+		nameFilter.saveState(memento);
+	}
+	/**根据保存的过滤器信息初始化过滤器*/
+	public void init(IMemento memento) {
+		nameFilter.init(memento);
+	}
 
 }
