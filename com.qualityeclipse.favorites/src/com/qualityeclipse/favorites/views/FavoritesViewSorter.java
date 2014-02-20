@@ -39,7 +39,7 @@ public class FavoritesViewSorter extends ViewerSorter {
 			infos[i].comparator = comparators[i];
 			infos[i].descending = false;
 			createSelectionListener(columns[i], infos[i]);
-			System.out.println(columns[i].getText()+"--"+infos[i].toString());
+			//System.out.println(columns[i].getText()+"--"+infos[i].toString());
 		}
 	}
 	

@@ -278,5 +278,17 @@
             sequence="Ctrl+Shift+A">
       </key>
    </extension>
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            class="com.qualityeclipse.favorites.editors.PropertiesEditor"
+            contributorClass="com.qualityeclipse.favorites.editors.PropertiesEditorContributor"
+            default="false"
+            extensions="properties"
+            icon="icons/sample.gif"
+            id="com.qualityeclipse.properties.editor"
+            name="Properties Editor">
+      </editor>
+   </extension>
 
 </plugin>

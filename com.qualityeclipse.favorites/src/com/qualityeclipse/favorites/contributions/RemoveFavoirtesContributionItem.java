@@ -92,7 +92,7 @@ public class RemoveFavoirtesContributionItem extends ContributionItem {
 
 		final IHandlerService handlerService = (IHandlerService) viewSite
 				.getService(IHandlerService.class);
-		System.out.println(viewSite.getSelectionProvider());
+		//System.out.println(viewSite.getSelectionProvider());
 		IEvaluationContext evaluationContext = handlerService
 				.createContextSnapshot(true);
 		ExecutionEvent event = new ExecutionEvent(null, Collections.EMPTY_MAP,
