@@ -39,6 +39,12 @@
             id="com.qualityeclipse.favorites.commands.rename"
             name="Rename">
       </command>
+      <command
+            categoryId="com.qualityeclipse.favorites.commands.category"
+            description="Delete the selected entries in the Properties Editor"
+            id="com.qualityeclipse.properties.editor.delete"
+            name="Delete">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -56,6 +62,24 @@
                   style="push">
             </command>
          </menu>
+         <menu
+               id="com.qualityeclipse.favorites.menus.PropertiesEditor"
+               label="Properties Editor">
+            <command
+                  commandId="com.qualityeclipse.properties.editor.delete"
+                  icon="icons/delete_edit.gif"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="com.qualityeclipse.properties.editor">
+                     </equals>
+                  </with>
+               </visibleWhen>
+            </command>
+         </menu>
       </menuContribution>
       <menuContribution
             locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
@@ -67,6 +91,23 @@
                   id="com.qualityeclipse.favorites.toolbars.openFavoritesView"
                   style="push"
                   tooltip="Open the Favorites view">
+            </command>
+         </toolbar>
+         <toolbar
+               id="com.qualityeclipse.properties.editor.toolbar">
+            <command
+                  commandId="com.qualityeclipse.properties.editor.delete"
+                  icon="icons/delete_edit.gif"
+                  style="push">
+               <visibleWhen
+                     checkEnabled="false">
+                  <with
+                        variable="activeEditorId">
+                     <equals
+                           value="com.qualityeclipse.properties.editor">
+                     </equals>
+                  </with>
+               </visibleWhen>
             </command>
          </toolbar>
       </menuContribution>
@@ -175,6 +216,23 @@
                style="push">
          </command>
       </menuContribution>
+      <menuContribution
+            locationURI="popup:com.qualityeclipse.properties.editor?after=edit">
+         <command
+               commandId="com.qualityeclipse.properties.editor.delete"
+               icon="icons/delete_edit.gif"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <with
+                     variable="selection">
+                  <count
+                        value="+">
+                  </count>
+               </with>
+            </visibleWhen>
+         </command>
+      </menuContribution>
    </extension>
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
@@ -268,6 +326,18 @@
             </with>
          </enabledWhen>
       </handler>
+      <handler
+            class="com.qualityeclipse.favorites.handlers.DeletePropertiesHandler"
+            commandId="com.qualityeclipse.properties.editor.delete">
+         <enabledWhen>
+            <with
+                  variable="activeEditorId">
+               <equals
+                     value="com.qualityeclipse.properties.editor">
+               </equals>
+            </with>
+         </enabledWhen>
+      </handler>
    </extension>
    <extension
          point="org.eclipse.ui.bindings">
@@ -276,6 +346,12 @@
             contextId="org.eclipse.ui.textEditorScope"
             schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
             sequence="Ctrl+Shift+A">
+      </key>
+      <key
+            commandId="com.qualityeclipse.properties.editor.delete"
+            contextId="com.qualityeclipse.properties.editor.context"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="F9">
       </key>
    </extension>
    <extension
@@ -289,6 +365,14 @@
             id="com.qualityeclipse.properties.editor"
             name="Properties Editor">
       </editor>
+   </extension>
+   <extension
+         point="org.eclipse.ui.contexts">
+      <context
+            id="com.qualityeclipse.properties.editor.context"
+            name="Properties Editor Context"
+            parentId="org.eclipse.ui.textEditorScope">
+      </context>
    </extension>
 
 </plugin>

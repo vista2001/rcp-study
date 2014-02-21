@@ -306,33 +306,8 @@ public class FavoritesView extends ViewPart {
 			}
 		});
 		viewer.getColumnViewerEditor().addEditorActivationListener(
-				new ColumnViewerEditorActivationListener() {
-					public void beforeEditorActivated(
-							ColumnViewerEditorActivationEvent event) {
-						if (event.eventType == ColumnViewerEditorActivationEvent.MOUSE_CLICK_SELECTION) {
-							if (!(event.sourceEvent instanceof MouseEvent))
-								event.cancel = true;
-							else {
-								MouseEvent mouseEvent = (MouseEvent) event.sourceEvent;
-								if ((mouseEvent.stateMask & SWT.ALT) == 0)
-									event.cancel = true;
-							}
-						} else if (event.eventType != ColumnViewerEditorActivationEvent.PROGRAMMATIC)
-							event.cancel = true;
-					}
-
-					public void afterEditorActivated(
-							ColumnViewerEditorActivationEvent event) {
-					}
-
-					public void beforeEditorDeactivated(
-							ColumnViewerEditorDeactivationEvent event) {
-					}
-
-					public void afterEditorDeactivated(
-							ColumnViewerEditorDeactivationEvent event) {
-					}
-				});
+				new AltClickCellEditListener());
+				
 	}
 
 	private void hookPageSelection() {
