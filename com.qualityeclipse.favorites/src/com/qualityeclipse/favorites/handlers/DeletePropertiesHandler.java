@@ -41,11 +41,17 @@ public class DeletePropertiesHandler extends AbstractHandler {
 		for (int i = 0; i < size; i++) {
 			elements[i] = (PropertyElement) ((Object) iterator.next());
 		}
+		
 		DeletePropertiesOperation op = new DeletePropertiesOperation(elements);
 		op.addContext(editor.getUndoContext());
 
-		IProgressMonitor monitor = editor.getEditorSite().getActionBars()
-				.getStatusLineManager().getProgressMonitor();
+		IProgressMonitor monitor = 
+				editor
+				.getEditorSite()
+				.getActionBars()
+				.getStatusLineManager()
+				.getProgressMonitor();
+		
 		IAdaptable info = new IAdaptable() {
 
 			@Override
@@ -56,6 +62,7 @@ public class DeletePropertiesHandler extends AbstractHandler {
 				return null;
 			}
 		};
+		
 		try {
 			editor.getOperationHistory().execute(op, monitor, info);
 		} catch (ExecutionException e) {

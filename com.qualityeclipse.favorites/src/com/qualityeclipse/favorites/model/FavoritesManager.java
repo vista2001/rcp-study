@@ -12,7 +12,11 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResourceChangeEvent;
+import org.eclipse.core.resources.IResourceDelta;
+import org.eclipse.core.resources.IResourceDeltaVisitor;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IMemento;
 import org.eclipse.ui.XMLMemento;
 
@@ -288,4 +292,57 @@ public class FavoritesManager {
 			iter.next().favoritesChanged(event);
 	}
 
+	/*public void resourceChanged(IResourceChangeEvent event) {
+		System.out.println("FavoritesManager - resource change event");
+		try {
+			event.getDelta().accept(new IResourceDeltaVisitor() {
+				public boolean visit(IResourceDelta delta) throws CoreException {
+					StringBuffer buf = new StringBuffer(80);
+					switch (delta.getKind()) {
+					case IResourceDelta.ADDED:
+						buf.append("ADDED");
+						break;
+					case IResourceDelta.REMOVED:
+						buf.append("REMOVED");
+						break;
+					case IResourceDelta.CHANGED:
+						buf.append("CHANGED");
+						break;
+					default:
+						buf.append("[");
+						buf.append(delta.getKind());
+						buf.append("]");
+						break;
+					}
+					buf.append(" ");
+					buf.append(delta.getResource());
+					System.out.println(buf);
+					return true;
+				}
+			});
+		} catch (CoreException ex) {
+			FavoritesLog.logError(ex);
+		}
+	}*/
+	public void resourceChanged(IResourceChangeEvent event) {
+		final Collection<IFavoriteItem> itemsToRemove = new HashSet<IFavoriteItem>();
+		try {
+			event.getDelta().accept(new IResourceDeltaVisitor() {
+				public boolean visit(IResourceDelta delta) throws CoreException {
+					if (delta.getKind() == IResourceDelta.REMOVED) {
+						IFavoriteItem item = existingFavoriteFor(delta
+								.getResource());
+						if (item != null)
+							itemsToRemove.add(item);
+					}
+					return true;
+				}
+			});
+		} catch (CoreException ex) {
+			FavoritesLog.logError(ex);
+		}
+		if (itemsToRemove.size() > 0)
+			removeFavorites(itemsToRemove
+					.toArray(new IFavoriteItem[itemsToRemove.size()]));
+	}
 }

@@ -3,6 +3,7 @@ package com.qualityeclipse.favorites.views;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.widgets.Display;
 
 import com.qualityeclipse.favorites.model.FavoritesManager;
 import com.qualityeclipse.favorites.model.FavoritesManagerEvent;
@@ -32,7 +33,20 @@ public class FavoritesViewContentProvider implements
 	}
 
 	@Override
-	public void favoritesChanged(FavoritesManagerEvent event) {
+	public void favoritesChanged(final FavoritesManagerEvent event) {
+		if (Display.getCurrent() != null) {
+	         updateViewer(event);
+	         return;
+	      }
+
+	      // otherwise, redirect to execute on the UI thread.
+	      Display.getDefault().asyncExec(new Runnable() {
+	         public void run() {
+	            updateViewer(event);
+	         }
+	      });
+	}
+	private void updateViewer(FavoritesManagerEvent event ){
 		viewer.getTable().setRedraw(false);
 		try {
 			viewer.remove(event.getItemsRemoved());

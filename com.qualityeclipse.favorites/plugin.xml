@@ -45,6 +45,13 @@
             id="com.qualityeclipse.properties.editor.delete"
             name="Delete">
       </command>
+      <command
+            categoryId="com.qualityeclipse.favorites.commands.category"
+            defaultHandler="com.qualityeclipse.favorites.handlers.SimulatedOperationHandler"
+            description="A do nothing operation that shows simulated progress in the Window&apos;s status bar"
+            id="com.qualityeclipse.favorites.commands.simulated"
+            name="Simulated Operation showing progress in Status Bar">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -213,6 +220,10 @@
          </command>
          <command
                commandId="com.qualityeclipse.favorites.commands.rename"
+               style="push">
+         </command>
+         <command
+               commandId="com.qualityeclipse.favorites.commands.simulated"
                style="push">
          </command>
       </menuContribution>
