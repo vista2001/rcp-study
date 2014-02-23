@@ -385,5 +385,36 @@
             parentId="org.eclipse.ui.textEditorScope">
       </context>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="com.qualityeclipse.favorites.perspectives.FavoritesPerspectiveFactory"
+            icon="icons/sample.gif"
+            id="com.qualityeclipse.favorites.FavoritesPerspective"
+            name="Favorites">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <view
+               id="com.qualityeclipse.favorites.views.FavoritesView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.TaskList"
+               visible="false">
+         </view>
+         <viewShortcut
+               id="com.qualityeclipse.favorites.views.FavoritesView">
+         </viewShortcut>
+         <perspectiveShortcut
+               id="com.qualityeclipse.favorites.FavoritesPerspective">
+         </perspectiveShortcut>
+         <actionSet
+               id="com.qualityeclipse.favorites.workbenchActionSet">
+         </actionSet>
+      </perspectiveExtension>
+   </extension>
 
 </plugin>
