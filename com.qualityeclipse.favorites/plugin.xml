@@ -416,5 +416,15 @@
          </actionSet>
       </perspectiveExtension>
    </extension>
+  <extension
+         point="org.eclipse.ui.newWizards">
+      <category
+            id="com.qualityeclipse.favorites"
+            name="Favorites"/>
+      <wizard
+            class="com.qualityeclipse.favorites.wizards.ExtractStringsWizard"
+            id="com.qualityeclipse.favorites.extract"
+            name="Extract Strings"/>
+   </extension>
 
 </plugin>

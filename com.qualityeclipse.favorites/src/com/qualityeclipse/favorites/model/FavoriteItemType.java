@@ -1,5 +1,8 @@
 package com.qualityeclipse.favorites.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IFolder;
 import org.eclipse.core.resources.IProject;
@@ -23,6 +26,8 @@ public abstract class FavoriteItemType implements Comparable<FavoriteItemType> {
 	private final int ordinal;
 	private static final ISharedImages PLATFORM_IMAGES = PlatformUI
 			.getWorkbench().getSharedImages();
+	
+	private static Map<String, FavoriteItemType> typeMap = null;
 
 	private FavoriteItemType(String id, String name, int position) {
 		this.id = id;
@@ -276,4 +281,15 @@ public abstract class FavoriteItemType implements Comparable<FavoriteItemType> {
 	public static FavoriteItemType[] getTypes() {
 		return TYPES;
 	}
+	
+	public static FavoriteItemType getType(String id) {
+	      if (typeMap == null) {
+	         typeMap = new HashMap<String, FavoriteItemType>(TYPES.length);
+	         for (int i = 0; i < TYPES.length; i++) {
+	            FavoriteItemType eachType = TYPES[i];
+	            typeMap.put(eachType.getId(), eachType);
+	         }
+	      }
+	      return typeMap.get(id);
+	   }
 }
