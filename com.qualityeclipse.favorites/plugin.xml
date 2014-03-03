@@ -426,5 +426,25 @@
             id="com.qualityeclipse.favorites.extract"
             name="Extract Strings"/>
    </extension>
+  <extension
+        point="org.eclipse.ui.preferencePages">
+     <page
+           class="com.qualityeclipse.favorites.preferences.FavoritesPreferencePage"
+           id="com.qualityeclipse.favorites.prefs.view"
+           name="Favorites">
+     </page>
+     <page
+            category="com.qualityeclipse.favorites.prefs.view"
+            class="com.qualityeclipse.favorites.preferences.NestedPreferencePage"
+            id="com.qualityeclipse.favorites.prefs.nested"
+            name="Nested Prefs">
+      </page>
+      <page
+            category="com.qualityeclipse.favorites.prefs.nested"
+            class="com.qualityeclipse.favorites.preferences.NestedPreferencePage2"
+            id="com.qualityeclipse.favorites.prefs.nested2"
+            name="Nested Prefs 2">
+      </page>
+  </extension>
 
 </plugin>
